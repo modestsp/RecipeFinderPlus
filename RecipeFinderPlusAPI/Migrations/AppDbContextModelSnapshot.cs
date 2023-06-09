@@ -29,6 +29,9 @@ namespace RecipeFinderPlusAPI.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
                     b.Property<int>("Likes")
                         .HasColumnType("integer");
 
