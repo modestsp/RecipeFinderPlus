@@ -4,18 +4,18 @@ using RecipeFinderPlusAPI.Services.Recipe;
 
 namespace RecipeFinderPlusAPI.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
-    public class RecipeController : ControllerBase
+    [ApiController]
+    public class RecipesController : ControllerBase
     {
         private readonly IRecipeService _recipeService;
 
-        public RecipeController(IRecipeService recipeService)
+        public RecipesController(IRecipeService recipeService)
         {
             _recipeService = recipeService;
         }
 
-        [HttpGet]
+        [HttpGet("trending")]
         public async Task<IActionResult> GetTrendingRecipes()
         {
             var recipes = await _recipeService.GetTrendingRecipesAsync();
@@ -36,6 +36,7 @@ namespace RecipeFinderPlusAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpsertRecipe(CreateRecipeRequest request)
         {
+            Console.WriteLine(request.Id.GetType());
             // Todo: Search the recipe in db
             var existingRecipe = await _recipeService.GetRecipeByIdAsync(request.Id);
             // Todo: If not found, add the recipe to db
@@ -45,6 +46,7 @@ namespace RecipeFinderPlusAPI.Controllers
                 {
                     Id = request.Id,
                     Title = request.Title,
+                    Image = request.Image,
                     Likes = 1
                 });
                 await _recipeService.SaveChangesAsync();
