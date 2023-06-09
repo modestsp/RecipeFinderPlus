@@ -1,5 +1,6 @@
 public record CreateRecipeRequest(
     int Id,
     string Title,
-    int Likes
+    int Likes,
+    string Image
 );
