@@ -36,10 +36,7 @@ namespace RecipeFinderPlusAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpsertRecipe(CreateRecipeRequest request)
         {
-            Console.WriteLine(request.Id.GetType());
-            // Todo: Search the recipe in db
             var existingRecipe = await _recipeService.GetRecipeByIdAsync(request.Id);
-            // Todo: If not found, add the recipe to db
             if (existingRecipe == null)
             {
                 _recipeService.AddRecipe(new Recipe
@@ -52,7 +49,7 @@ namespace RecipeFinderPlusAPI.Controllers
                 await _recipeService.SaveChangesAsync();
                 return Ok();
             }
-            // Todo: if found, update the number of likes
+
             await _recipeService.UpdateRecipeAsync(existingRecipe);
             await _recipeService.SaveChangesAsync();
             return Ok();
