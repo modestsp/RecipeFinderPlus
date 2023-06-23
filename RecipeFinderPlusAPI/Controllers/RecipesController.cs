@@ -36,6 +36,7 @@ namespace RecipeFinderPlusAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpsertRecipe(CreateRecipeRequest request)
         {
+            Console.WriteLine(request.Id);
             var existingRecipe = await _recipeService.GetRecipeByIdAsync(request.Id);
             if (existingRecipe == null)
             {

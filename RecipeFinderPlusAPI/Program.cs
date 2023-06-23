@@ -14,6 +14,16 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAnyOrigin", builder =>
+        {
+            builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        });
+    });
     builder.Services.AddHealthChecks();
 }
 
@@ -30,6 +40,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAnyOrigin");
 
 app.UseAuthorization();
 
