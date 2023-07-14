@@ -14,16 +14,16 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowAnyOrigin", builder =>
-        {
-            builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-        });
-    });
+    // builder.Services.AddCors(options =>
+    // {
+    //     options.AddPolicy("AllowAnyOrigin", builder =>
+    //     {
+    //         builder
+    //         .AllowAnyOrigin()
+    //         .AllowAnyMethod()
+    //         .AllowAnyHeader();
+    //     });
+    // });
     builder.Services.AddHealthChecks();
 }
 
@@ -32,19 +32,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 app.MapHealthChecks("/health");
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// // Configure the HTTP request pipeline.
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
-app.UseCors("AllowAnyOrigin");
+// app.UseCors("AllowAnyOrigin");
 
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapFallbackToFile("index.html");
 app.Run();
