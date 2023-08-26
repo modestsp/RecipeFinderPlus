@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<IRecipeService, RecipeService>();
 
-    var connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection");
+    var connectionString = Environment.GetEnvironmentVariables("Connection").ToString();
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
