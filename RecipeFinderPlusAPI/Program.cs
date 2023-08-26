@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RecipeFinderPlusAPI.Data;
 using RecipeFinderPlusAPI.Services.Recipe;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -10,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<IRecipeService, RecipeService>();
 
-    var connectionString = Environment.GetEnvironmentVariables("Connection").ToString();
+    string connectionString = Environment.GetEnvironmentVariable("Connection");
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
