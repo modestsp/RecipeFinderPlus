@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddScoped<IRecipeService, RecipeService>();
 
-    string connectionString = Environment.GetEnvironmentVariable("Connection");
+    string connectionString = builder.Configuration.GetConnectionString("PostgreSQLConnection");
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
@@ -32,6 +32,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 var app = builder.Build();
+
+// Apply database migrations
+using var scope = app.Services.CreateScope();
+await using var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+await dbContext.Database.MigrateAsync();
+
 app.MapHealthChecks("/health");
 // // Configure the HTTP request pipeline.
 // if (app.Environment.IsDevelopment())
